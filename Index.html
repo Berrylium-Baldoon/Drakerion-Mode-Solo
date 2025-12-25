@@ -253,7 +253,7 @@
                 <li>Le bouton <span class="highlight-text">BONUS D'ACTION</span> (sous Prestige) permet d'octroyer à l'adversaire un bonus de +1 Or ou +1 Prestige aléatoirement si <span class="highlight-text">aucune action</span> n'est réalisable lors de la phase d'action de l'adversaire virtuel.</li>
             </ul>
 
-            <div class="help-section-title">Le bouton “ACTION (X/10)”</div>
+            <div class="help-section-title">Le bouton “ACTION (X)”</div>
             <ul class="help-list">
                 <li>Il simule une action de l'adversaire. Le résultat affiché est aléatoire, basé sur la pondération de l'adversaire virtuel.</li>
                 <li>Si l'adversaire virtuel <span class="highlight-text">doit jouer un personnage</span> et qu'il n'a plus assez d'or, placez la carte piochée sous le deck et piochez-en une. Répétez l'action jusqu'à ce que la carte piochée puisse être payée (idem avec les événements et les attachements).</li>
@@ -326,7 +326,7 @@
     
     <div id="iaControls"> 
         <div class="action-buttons-group">
-            <button id="actionBtn" onclick="performAppAction()">ACTION (0/10)</button>
+            <button id="actionBtn" onclick="performAppAction()">ACTION (0)</button>
             <button id="declareCombatBtn" onclick="startCombat('player')">DÉCLARER UN COMBAT</button>
         </div>
         
@@ -359,6 +359,8 @@
     let iaActionCount = 0;
     let maneuverGoldAdded = false;
     let iaCharactersPlayed = 0;
+    let actionsSinceZeroGold = 0;
+    let iaHasPassed = false; // Sécurité irréversible
 
     const baseActions = {
         "Je joue une carte personnage/attachement.": 4, 
@@ -383,7 +385,8 @@
 
     function applyInterfaceLock() {
         const lock = !maneuverGoldAdded;
-        const elements = ['prestigeSection', 'turnSection', 'iaControls', 'actionBtn', 'declareCombatBtn', 'nextTurnBtn', 'bonusActionBtn', 'presPlus', 'presMoins', 'helpBtn'];
+        const elements = ['prestigeSection', 'turnSection', 'iaControls', 'declareCombatBtn', 'nextTurnBtn', 'bonusActionBtn', 'presPlus', 'presMoins', 'helpBtn'];
+        
         elements.forEach(id => {
             const el = document.getElementById(id);
             if (el) {
@@ -391,6 +394,14 @@
                 if (el.tagName === 'BUTTON') el.disabled = lock;
             }
         });
+
+        // Gestion spécifique du bouton Action : verrouillé si pas d'or de manœuvre OU si l'IA a passé définitivement
+        const actionBtn = document.getElementById('actionBtn');
+        if (actionBtn) {
+            actionBtn.disabled = (lock || iaHasPassed);
+            actionBtn.classList.toggle('locked-zone', (lock || iaHasPassed));
+        }
+
         document.getElementById('goldHint').style.display = lock ? 'block' : 'none';
         if (lock) document.getElementById('actionResult').innerHTML = "<p>En attente de l'Or de la manœuvre...</p>";
     }
@@ -399,7 +410,11 @@
         gold += amount;
         if (gold < 0) gold = 0;
         document.getElementById('goldValue').textContent = gold;
-        if (amount > 0) maneuverGoldAdded = true;
+        if (amount > 0) {
+            maneuverGoldAdded = true;
+            // On ne reset le compteur d'actions à 0 Or que si l'IA n'a pas déjà passé définitivement
+            if (!iaHasPassed) actionsSinceZeroGold = 0; 
+        }
         applyInterfaceLock();
     }
 
@@ -409,21 +424,33 @@
     }
 
     function performAppAction() {
-        if (iaActionCount >= 10) return;
+        if (iaHasPassed) return; // Sécurité supplémentaire
+
         iaActionCount++;
-        
+        if (gold === 0) actionsSinceZeroGold++;
+
         let dynamicActions = [];
         let totalWeight = 0;
+
         for (const action in baseActions) {
             let currentWeight = baseActions[action];
+
             if (action === "Je joue une carte personnage/attachement.") {
                 if (iaCharactersPlayed < 2) currentWeight = 12;
                 if (gold === 0) continue; 
             }
+
             if (action === "Je déclare un combat !" && iaCharactersPlayed < 2) continue;
             if (action === "je passe." && iaActionCount < 5) continue;
+
             dynamicActions.push({ action: action, weight: currentWeight });
             totalWeight += currentWeight;
+        }
+
+        if (gold === 0 && actionsSinceZeroGold >= 3) {
+            let weightPass = (actionsSinceZeroGold >= 5) ? 20 : 5; 
+            dynamicActions.push({ action: "Je passe définitivement", weight: weightPass });
+            totalWeight += weightPass;
         }
 
         let randomNum = Math.random() * totalWeight;
@@ -434,10 +461,15 @@
         }
         
         if (selectedAction.includes("personnage")) iaCharactersPlayed++;
-        document.getElementById('actionBtn').textContent = `ACTION (${iaActionCount}/10)`;
+        
+        document.getElementById('actionBtn').textContent = `ACTION (${iaActionCount})`;
 
         if (selectedAction === "Je déclare un combat !") {
             startCombat('ia');
+        } else if (selectedAction === "Je passe définitivement") {
+            iaHasPassed = true; // Verrouillage irréversible pour le tour
+            document.getElementById('actionResult').innerHTML = `<p style="color: #d9534f;">😴 ${selectedAction}</p>`;
+            document.getElementById('actionBtn').disabled = true; 
         } else {
             document.getElementById('actionResult').innerHTML = `<p>${selectedAction}</p>`;
         }
@@ -465,7 +497,12 @@
         document.getElementById('combatModule').style.display = 'none';
         document.querySelector('.combat-titles-row').style.display = 'none';
         document.getElementById('endCombatBtn').style.display = 'none';
-        document.getElementById('actionBtn').disabled = (iaActionCount >= 10);
+        
+        // On ne réactive le bouton action que si l'IA n'avait pas déjà passé définitivement
+        if (!iaHasPassed) {
+            document.getElementById('actionBtn').disabled = false;
+        }
+        
         document.getElementById('declareCombatBtn').disabled = false;
         document.getElementById('actionResult').classList.remove('combat-alert');
         document.getElementById('actionResult').innerHTML = "<p>Combat terminé.</p>";
@@ -475,18 +512,20 @@
         turn++;
         document.getElementById('turnValue').textContent = turn;
         iaActionCount = 0;
+        actionsSinceZeroGold = 0;
+        iaHasPassed = false; // On libère le verrou pour le nouveau tour
         maneuverGoldAdded = false;
         iaCharactersPlayed = 0;
-        document.getElementById('actionBtn').textContent = `ACTION (0/10)`;
+        document.getElementById('actionBtn').textContent = `ACTION (0)`;
         applyInterfaceLock();
     }
 
     function resetGame() {
-        gold = 0; prestige = 0; turn = 1; iaActionCount = 0; maneuverGoldAdded = false;
+        gold = 0; prestige = 0; turn = 1; iaActionCount = 0; maneuverGoldAdded = false; actionsSinceZeroGold = 0; iaHasPassed = false;
         document.getElementById('goldValue').textContent = 0;
         document.getElementById('prestigeValue').textContent = 0;
         document.getElementById('turnValue').textContent = 1;
-        document.getElementById('actionBtn').textContent = `ACTION (0/10)`;
+        document.getElementById('actionBtn').textContent = `ACTION (0)`;
         document.getElementById('welcomeScreen').style.display = 'flex';
         document.getElementById('welcomeScreen').style.opacity = '1';
         applyInterfaceLock();
@@ -502,24 +541,19 @@
         }
     }
 
-    /* Fonctions Modale Aide */
     function showHelp() { document.getElementById('helpModal').style.display = 'flex'; }
     function hideHelp() { document.getElementById('helpModal').style.display = 'none'; }
     
     function switchTab(evt, tabId) {
         const contents = document.getElementsByClassName("tab-content");
         for (let i = 0; i < contents.length; i++) contents[i].classList.remove("active");
-        
         const buttons = document.getElementsByClassName("tab-btn");
         for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove("active");
-        
         document.getElementById(tabId).classList.add("active");
         evt.currentTarget.classList.add("active");
     }
 
-    window.onload = () => {
-        applyInterfaceLock();
-    };
+    window.onload = () => { applyInterfaceLock(); };
 </script>
 </body>
 </html>
