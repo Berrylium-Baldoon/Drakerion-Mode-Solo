@@ -1,0 +1,108 @@
+/* THÈME : VIEUX GRIMOIRE */
+:root {
+    --bg-color: #1a0f05;
+    --paper-color: #dcb07a; /* Couleur vieux papier */
+    --accent-red: #8b0000;
+    --accent-blue: #2c3e50;
+    --text-main: #2e1a05;
+}
+
+body {
+    background-color: var(--bg-color);
+    background-image: radial-gradient(#2c1a0a 1px, transparent 1px);
+    background-size: 20px 20px;
+    font-family: 'Roboto', sans-serif;
+    color: #f5e6d3;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2 {
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #d4af37; /* Or vieilli */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+.container {
+    max-width: 500px;
+    margin: 20px auto;
+    background: var(--paper-color);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.7), inset 0 0 100px rgba(0,0,0,0.2);
+    border: 8px double #5d4037; /* Bordure style cadre ancien */
+    color: var(--text-main);
+}
+
+/* COMPTEURS STYLE ENCRE */
+.counter {
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid #5d4037;
+    border-radius: 0; /* Plus carré, plus ancien */
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.value {
+    font-family: 'Cinzel', serif;
+    font-size: 2.8em;
+    font-weight: bold;
+    color: #2e1a05;
+}
+
+/* BOUTONS STYLE SCEAU DE CIRE OU CUIR */
+button {
+    font-family: 'Cinzel', serif;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
+.btn-gold { background: #b8860b; color: white; }
+.btn-blue { background: #3d5a80; color: white; }
+.btn-red { background: #7b1113; color: white; }
+.btn-green { background: #3e5622; color: white; }
+.btn-orange { background: #c67117; color: white; }
+
+button:hover { filter: brightness(1.2); transform: translateY(-2px); }
+
+/* ZONE D'ACTION STYLE PARCHEMIN */
+.action-result {
+    background: #c2996b;
+    border-left: 5px solid #5d4037;
+    padding: 15px;
+    font-style: italic;
+    color: #2e1a05;
+    min-height: 60px;
+}
+
+/* VERROUILLAGE */
+.locked-zone {
+    opacity: 0.4;
+    filter: grayscale(1);
+    pointer-events: none;
+}
+
+/* ECRAN D'ACCUEIL GRIMOIRE */
+#welcomeScreen {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 2000;
+}
+
+.welcome-content {
+    background: #e9d5b7;
+    padding: 40px;
+    border: 15px solid #3d2b1f;
+    max-width: 600px;
+    color: #2e1a05;
+    text-align: center;
+}
