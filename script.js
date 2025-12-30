@@ -1,12 +1,6 @@
 let gold = 0, prestige = 0, turn = 1, iaActionCount = 0, maneuverGoldAdded = false;
 let iaNoMoreAttackers = false, iaHasPassedDefinitively = false, hasHadZeroGold = false;
 let zeroGoldActionCount = 0; 
-const music = document.getElementById('bgMusic');
-
-function toggleMusic() {
-    if (music.paused) { music.play().catch(e => console.error(e)); document.getElementById('musicBtn').textContent = "🔊 MUSIQUE"; }
-    else { music.pause(); document.getElementById('musicBtn').textContent = "🔇 MUSIQUE"; }
-}
 
 function startGame() { document.getElementById('welcomeScreen').style.display = 'none'; applyInterfaceLock(); }
 
