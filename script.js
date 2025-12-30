@@ -1,37 +1,66 @@
-let gold = 0, prestige = 0, turn = 1, iaActionCount = 0, maneuverGoldAdded = false;
-let iaNoMoreAttackers = false, iaHasPassedDefinitively = false, hasHadZeroGold = false;
+let gold = 0;
+let prestige = 0;
+let turn = 1;
+let iaActionCount = 0;
+let maneuverGoldAdded = false;
+let iaNoMoreAttackers = false;
+let iaHasPassedDefinitively = false;
+let hasHadZeroGold = false;
 let zeroGoldActionCount = 0;
 
-function startGame() { 
-    document.getElementById('welcomeScreen').style.display = 'none'; 
-    applyInterfaceLock(); 
+// FONCTION POUR CHARGER L'ACCUEIL DEPUIS ACCUEIL.HTML
+async function loadWelcomeScreen() {
+    const screen = document.getElementById('welcomeScreen');
+    if (screen) {
+        try {
+            const response = await fetch('accueil.html');
+            const content = await response.text();
+            screen.innerHTML = content;
+            screen.style.display = 'flex';
+        } catch (e) {
+            console.error("Erreur chargement accueil:", e);
+            // Backup au cas où le fichier est manquant
+            screen.innerHTML = "<div class='welcome-content'><button class='btn-red' onclick='startGame()'>COMBATTRE</button></div>";
+            screen.style.display = 'flex';
+        }
+    }
 }
 
-function updateGold(amount) { 
-    gold = Math.max(0, gold + amount); 
-    document.getElementById('goldValue').textContent = gold; 
-    if (gold === 0) hasHadZeroGold = true; 
-    if (amount > 0 && !maneuverGoldAdded) { 
-        maneuverGoldAdded = true; 
-        applyInterfaceLock(); 
-    } 
+function startGame() {
+    const screen = document.getElementById('welcomeScreen');
+    if (screen) screen.style.display = 'none';
+    applyInterfaceLock();
 }
 
-function updatePrestige(amount) { 
-    prestige = Math.max(0, prestige + amount); 
+function updateGold(amount) {
+    gold = Math.max(0, gold + amount);
+    document.getElementById('goldValue').textContent = gold;
+    if (gold === 0) hasHadZeroGold = true;
+    if (amount > 0 && !maneuverGoldAdded) {
+        maneuverGoldAdded = true;
+        applyInterfaceLock();
+    }
+}
+
+function updatePrestige(amount) {
+    prestige = Math.max(0, prestige + amount);
     document.getElementById('prestigeValue').textContent = prestige;
-    if (prestige >= 20) document.getElementById('victoryScreen').style.display = 'flex';
+    if (prestige >= 20) {
+        const victory = document.getElementById('victoryScreen');
+        if (victory) victory.style.display = 'flex';
+    }
 }
 
 function applyInterfaceLock() {
     const lock = !maneuverGoldAdded;
-    const prestigeSec = document.getElementById('prestigeSection');
-    const turnSec = document.getElementById('turnSection');
-    const iaBtnGrp = document.getElementById('iaButtonGroup');
     
-    if(prestigeSec) prestigeSec.classList.toggle('locked-zone', lock);
-    if(turnSec) turnSec.classList.toggle('locked-zone', lock);
-    if(iaBtnGrp) iaBtnGrp.classList.toggle('locked-zone', lock);
+    const pSec = document.getElementById('prestigeSection');
+    const tSec = document.getElementById('turnSection');
+    const iGrp = document.getElementById('iaButtonGroup');
+    
+    if (pSec) pSec.classList.toggle('locked-zone', lock);
+    if (tSec) tSec.classList.toggle('locked-zone', lock);
+    if (iGrp) iGrp.classList.toggle('locked-zone', lock);
     
     document.querySelectorAll('#prestigeSection button, #turnSection button, #iaButtonGroup button').forEach(b => {
         if (b.id === 'actionBtn' && iaHasPassedDefinitively) b.disabled = true;
@@ -54,26 +83,26 @@ async function showHelp() {
             const content = await response.text();
             modal.innerHTML = content;
         } catch (e) { 
-            modal.innerHTML = "<div class='modal-content'>Erreur de chargement.</div>"; 
+            modal.innerHTML = "<div class='modal-content'>Erreur de chargement de l'aide.</div>"; 
         }
     }
-    if(modal) modal.style.display = 'flex';
+    if (modal) modal.style.display = 'flex';
 }
 
 function hideHelp() { 
     const modal = document.getElementById('helpModal');
-    if(modal) modal.style.display = 'none'; 
+    if (modal) modal.style.display = 'none'; 
 }
 
-function switchTab(evt, tabId) { 
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active')); 
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); 
+function switchTab(evt, tabId) {
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     const target = document.getElementById(tabId);
-    if(target) target.classList.add('active'); 
-    if(evt) evt.currentTarget.classList.add('active'); 
+    if (target) target.classList.add('active');
+    if (evt) evt.currentTarget.classList.add('active');
 }
 
-function toggleBoardState() { 
+function toggleBoardState() {
     const btn = document.getElementById('boardStateBtn');
     if (btn) {
         if (!iaNoMoreAttackers) { 
@@ -89,8 +118,8 @@ function toggleBoardState() {
 function performAppAction() {
     if (iaHasPassedDefinitively) return;
     iaActionCount++;
-    const actionBtn = document.getElementById('actionBtn');
-    if(actionBtn) actionBtn.textContent = `ACTION (${iaActionCount})`;
+    const actBtn = document.getElementById('actionBtn');
+    if (actBtn) actBtn.textContent = "ACTION (" + iaActionCount + ")";
     
     let validActionFound = false;
     let move = "";
@@ -103,59 +132,55 @@ function performAppAction() {
         if (rand < passThreshold) {
             move = "Je passe mon tour définitivement.";
             iaHasPassedDefinitively = true;
-            if(actionBtn) actionBtn.disabled = true;
+            if (actBtn) actBtn.disabled = true;
             validActionFound = true;
-        } else if (rand < 40) { 
+        } else if (rand < 40) {
             if (gold > 0) {
                 move = "Je joue une carte personnage/attachement.";
                 iaNoMoreAttackers = false;
-                const boardBtn = document.getElementById('boardStateBtn');
-                if(boardBtn) boardBtn.textContent = "PLUS D'ATTAQUANTS";
+                const bBtn = document.getElementById('boardStateBtn');
+                if (bBtn) bBtn.textContent = "PLUS D'ATTAQUANTS";
                 validActionFound = true;
             }
-        } else if (rand < 65) { 
-            if (!iaNoMoreAttackers) { 
-                startCombat(true); 
-                return; 
-            }
+        } else if (rand < 65) {
+            if (!iaNoMoreAttackers) { startCombat(true); return; }
         } else if (rand < 85) {
             move = "Je joue une carte événement ACTION.";
             validActionFound = true;
-        } else { 
+        } else {
             move = "J'active une capacité ACTION (de gauche à droite).";
             validActionFound = true;
         }
     }
     const res = document.getElementById('actionResult');
-    if(res) res.innerHTML = `<p>${move}</p>`;
+    if (res) res.innerHTML = "<p>" + move + "</p>";
 }
 
-function startCombat(isIA = false) {
+function startCombat(isIA) {
     const mod = document.getElementById('combatModule');
     const iaGrp = document.getElementById('iaButtonGroup');
-    if(mod) mod.style.display = 'block';
-    if(iaGrp) iaGrp.classList.add('locked-zone');
-    
-    document.querySelectorAll('#iaButtonGroup button').forEach(b => b.disabled = true);
-    
     const res = document.getElementById('actionResult');
     const resp = document.getElementById('combatResponse');
-    const endBtn = document.getElementById('endCombatBtn');
     
-    if(res) res.style.display = 'none';
-    if(resp) resp.innerHTML = isIA ? "🔥 JE DÉCLARE UN COMBAT 🔥" : "🔥 COMBAT DÉCLARÉ 🔥";
-    if(endBtn) endBtn.disabled = true;
+    if (mod) mod.style.display = 'block';
+    if (iaGrp) iaGrp.classList.add('locked-zone');
+    document.querySelectorAll('#iaButtonGroup button').forEach(b => b.disabled = true);
+    if (res) res.style.display = 'none';
+    if (resp) resp.innerHTML = isIA ? "🔥 JE DÉCLARE UN COMBAT 🔥" : "🔥 COMBAT DÉCLARÉ 🔥";
+    
+    const endBtn = document.getElementById('endCombatBtn');
+    if (endBtn) endBtn.disabled = true;
 }
 
 function performCombatAction() {
     const moves = ["Je joue un événement 'Combat'.", "Je passe."];
     const resp = document.getElementById('combatResponse');
     const cBtn = document.getElementById('combatBtn');
-    const endBtn = document.getElementById('endCombatBtn');
+    const eBtn = document.getElementById('endCombatBtn');
     
-    if(resp) resp.innerHTML = moves[Math.floor(Math.random() * moves.length)];
-    if(cBtn) cBtn.style.display = 'none';
-    if(endBtn) endBtn.disabled = false;
+    if (resp) resp.innerHTML = moves[Math.floor(Math.random() * moves.length)];
+    if (cBtn) cBtn.style.display = 'none';
+    if (eBtn) eBtn.disabled = false;
 }
 
 function endCombat() {
@@ -164,47 +189,44 @@ function endCombat() {
     const res = document.getElementById('actionResult');
     const cBtn = document.getElementById('combatBtn');
     
-    if(mod) mod.style.display = 'none';
-    if(iaGrp) iaGrp.classList.remove('locked-zone');
-    
+    if (mod) mod.style.display = 'none';
+    if (iaGrp) iaGrp.classList.remove('locked-zone');
     applyInterfaceLock();
-    
-    if(res) {
+    if (res) {
         res.style.display = 'flex';
         res.innerHTML = "<p>Combat terminé.</p>";
     }
-    if(cBtn) cBtn.style.display = 'flex';
+    if (cBtn) cBtn.style.display = 'flex';
 }
 
-function nextTurn() { 
-    turn++; 
-    maneuverGoldAdded = false; 
-    iaActionCount = 0; 
-    iaHasPassedDefinitively = false; 
+function nextTurn() {
+    turn++;
+    maneuverGoldAdded = false;
+    iaActionCount = 0;
+    iaHasPassedDefinitively = false;
     iaNoMoreAttackers = false;
     hasHadZeroGold = (gold === 0);
-    zeroGoldActionCount = 0; 
+    zeroGoldActionCount = 0;
     
-    const boardBtn = document.getElementById('boardStateBtn');
-    const turnVal = document.getElementById('turnValue');
-    const actBtn = document.getElementById('actionBtn');
+    const bBtn = document.getElementById('boardStateBtn');
+    const tVal = document.getElementById('turnValue');
+    const aBtn = document.getElementById('actionBtn');
     
-    if(boardBtn) boardBtn.textContent = "PLUS D'ATTAQUANTS";
-    if(turnVal) turnVal.textContent = turn; 
-    if(actBtn) actBtn.textContent = "ACTION (0)"; 
-    
-    applyInterfaceLock(); 
+    if (bBtn) bBtn.textContent = "PLUS D'ATTAQUANTS";
+    if (tVal) tVal.textContent = turn;
+    if (aBtn) aBtn.textContent = "ACTION (0)";
+    applyInterfaceLock();
 }
 
-function applyBonusAction() { 
-    if (Math.random() < 0.5) updateGold(1); 
-    else updatePrestige(1); 
+function applyBonusAction() {
+    if (Math.random() < 0.5) updateGold(1);
+    else updatePrestige(1);
 }
 
-function resetGame() { 
-    location.reload(); 
-}
+function resetGame() { location.reload(); }
 
+// INITIALISATION AU CHARGEMENT DE LA PAGE
 window.onload = function() {
+    loadWelcomeScreen();
     applyInterfaceLock();
 };
