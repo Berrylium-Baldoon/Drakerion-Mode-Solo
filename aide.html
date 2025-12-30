@@ -1,0 +1,31 @@
+<div class="modal-content">
+    <button class="btn-gold" onclick="hideHelp()" style="position: absolute; top: 10px; right: 10px; width: 40px; min-height: 30px;">X</button>
+    <h2 style="color: #f0ad4e; font-family: 'Cinzel'; text-align: center;">Aide et Règles du Mode Solo</h2>
+    <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab(event, 'rules-tab')">Règles Solo</button>
+        <button class="tab-btn" onclick="switchTab(event, 'interface-tab')">Interface</button>
+    </div>
+    
+    <div id="rules-tab" class="tab-content active">
+        <div class="help-section-title">règles solo.</div>
+        <p>Les cartes personnages adverses arrivent en jeu à l’extrême gauche. Décalez l’ensemble des cartes si besoin.</p>
+        <p>Lorsque l’application déclare un combat, c’est toujours son combattant le plus à <span class="highlight-gold">gauche</span> étant redressé qui attaque votre combattant le plus à <span class="highlight-gold">gauche</span>.</p>
+        <p>Lorsqu’un personnage avec infiltrateur vous attaque, la capacité “infiltrateur” doit être utilisée si possible. L’infiltrateur attaquera alors le personnage le plus à gauche de votre ligne de soutien.</p>
+        <p>Lorsqu’une capacité redirige une de vos attaques sur un autre personnage (en dehors d’intercepteur), redirigez en priorité sur le personnage adjacent côté <span class="highlight-gold">droit</span>. S’il n’y a pas de personnage à droite, faites pareil mais côté gauche.</p>
+        <p>Lorsqu’un soin est prodigué, l’adversaire soigne toujours la carte adjacente côté <span class="highlight-gold">droit</span>. S’il ne nécessite pas de soins, passer à la carte suivante. S’il n’y a pas besoin de soins sur la droite, faites pareil mais côté gauche.</p>
+        <p>Si une capacité action est tirée au sort et qu’aucune carte ne peut en réaliser une, appuyer sur le bouton “Bonus d’action” qui fera gagner aléatoirement un d’or ou un de prestige à votre adversaire.</p>
+        <p>Si une capacité de déplacement s’applique à un personnage au hasard, déplacez le personnage à <span class="highlight-gold">droite</span> de la carte faisant cette action. S’il n’y en a pas à droite, faites-le à gauche. Si le déplacement concerne un personnage sur une autre ligne, déplacez celui qui est le plus à gauche.</p>
+    </div>
+    
+    <div id="interface-tab" class="tab-content">
+        <div class="help-section-title">L’interface.</div>
+        <p><strong>Le bouton Aide :</strong> Il vous donne accès à tout ce qu’il faut savoir pour faire tourner le mode solo.</p>
+        <p><strong>Le bouton “ACTION” :</strong> Il vous permet de simuler une action de l’adversaire. Le résultat affiché est aléatoire. Si votre adversaire virtuel doit jouer un personnage et qu’il n’a plus assez d’or, placez le personnage pioché sous le deck et piochez-en un. Répétez l’action jusqu’à ce que le personnage pioché puisse être payé. Lorsque l’or est à 0, l’option jouer un personnage ne doit plus être proposée.</p>
+        <p><strong>Le bouton “FIN DE COMBAT” :</strong> Il permet de clôturer le combat à l’écran et de revenir à la phase d’action. Tant qu’il n’est pas activé, la phase d’action ne sait pas continuer.</p>
+        <p><strong>Le bouton “DECLARER UN COMBAT” :</strong> Il vous permet de déclarer un combat à votre adversaire virtuel. Le déroulement du combat est identique.</p>
+        <p><strong>Le bouton “CAPACITÉS DE COMBAT” :</strong> Il vous permet de simuler les capacités combat de votre adversaire virtuel. Ce bouton ne peut être cliqué qu'une seule fois par combat et disparaît après usage.</p>
+        <p><strong>Le bouton “Plus d’attaquants” :</strong> il vous permet de signaler à votre adversaire virtuel qu’elle ne possède plus de personnages redressés.</p>
+        <p><strong>Le bouton “RÉINITIALISER” :</strong> Il vous permet de remettre l’interface à zéro afin de recommencer une partie.</p>
+        <p><strong>Le bouton “Bonus Action” :</strong> Il permet d’octroyer à l’adversaire virtuel un bonus d’or ou de prestige aléatoirement si aucune action n’est réalisable.</p>
+    </div>
+</div>
