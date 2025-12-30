@@ -8,18 +8,11 @@ let iaHasPassedDefinitively = false;
 let hasHadZeroGold = false;
 let zeroGoldActionCount = 0;
 
-async function loadWelcomeScreen() {
+function loadWelcomeScreen() {
     const screen = document.getElementById('welcomeScreen');
-    if (!screen) return;
-    try {
-        const response = await fetch('accueil.html');
-        if (!response.ok) throw new Error("Fichier accueil.html manquant");
-        const content = await response.text();
-        screen.innerHTML = content;
-        screen.style.display = 'flex';
-    } catch (e) {
-        console.error("Erreur chargement accueil:", e);
-        screen.innerHTML = "<div class='welcome-content'><h2>Drakerion Solo</h2><button class='btn-red' onclick='startGame()'>LANCER LE JEU</button></div>";
+    const template = document.getElementById('welcomeTemplate');
+    if (screen && template) {
+        screen.innerHTML = template.innerHTML;
         screen.style.display = 'flex';
     }
 }
