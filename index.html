@@ -17,7 +17,6 @@
             background-color: #121212;
         }
 
-        /* --- STYLE DES BOUTONS GÉNÉRALISÉ --- */
         button {
             position: relative;
             padding: 10px;
@@ -30,7 +29,7 @@
             border: 2px solid #d4af37;
             border-radius: 4px;
             box-shadow: 0 4px 0 #8a6d3b, inset 0 1px 1px rgba(255,255,255,0.2);
-            overflow: hidden; /* Important pour l'effet de lumière */
+            overflow: hidden;
             transition: all 0.1s ease;
             text-shadow: 1px 1px 2px #000;
             min-height: 45px; 
@@ -40,7 +39,6 @@
             justify-content: center;
         }
 
-        /* L'effet de lumière au survol */
         button::before {
             content: '';
             position: absolute;
@@ -48,35 +46,14 @@
             left: -100%;
             width: 50%;
             height: 100%;
-            background: linear-gradient(
-                to right, 
-                rgba(255,255,255,0) 0%, 
-                rgba(255,255,255,0.3) 50%, 
-                rgba(255,255,255,0) 100%
-            );
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
             transform: skewX(-25deg);
-            transition: none;
         }
 
-        button:hover:not(:disabled)::before {
-            left: 150%;
-            transition: all 0.6s ease;
-        }
+        button:hover:not(:disabled)::before { left: 150%; transition: all 0.6s ease; }
+        button:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 #8a6d3b; }
+        button:disabled { filter: grayscale(1); opacity: 0.5; cursor: not-allowed; box-shadow: none; transform: none !important; }
 
-        button:active:not(:disabled) {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #8a6d3b;
-        }
-
-        button:disabled {
-            filter: grayscale(1);
-            opacity: 0.5;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none !important;
-        }
-
-        /* Variantes de couleurs */
         .btn-gold { background: linear-gradient(135deg, #443512 0%, #1a1405 100%); border-color: #d4af37; box-shadow: 0 4px 0 #8a6d3b; }
         .btn-red { background: linear-gradient(135deg, #600 0%, #200 100%); border-color: #ff4500; box-shadow: 0 4px 0 #800; }
         .btn-green { background: linear-gradient(135deg, #1e3d1e 0%, #0a140a 100%); border-color: #5cb85c; box-shadow: 0 4px 0 #2d5a2d; }
@@ -93,64 +70,17 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.9);
         }
 
-        .counter-section { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 15px;
-            margin-bottom: 15px; 
-            padding: 15px; 
-            border: 1px solid #444; 
-            border-radius: 8px; 
-        }
+        .counter-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px; padding: 15px; border: 1px solid #444; border-radius: 8px; }
         .counter { text-align: center; display: flex; flex-direction: column; gap: 8px; }
         .value { font-size: 3.5em; font-weight: bold; margin: 5px 0; color: #d4af37; line-height: 1; }
         .grid-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-
-        .locked-zone { 
-            filter: blur(4px) grayscale(0.8); 
-            pointer-events: none; 
-            opacity: 0.4;
-            transition: all 0.5s ease;
-        }
-
-        @keyframes gold-pulse {
-            0% { transform: scale(1); box-shadow: 0 0 10px #d4af37; }
-            50% { transform: scale(1.02); box-shadow: 0 0 25px #ffcc33; }
-            100% { transform: scale(1); box-shadow: 0 0 10px #d4af37; }
-        }
-
-        .gold-waiting-msg {
-            color: #d4af37;
-            font-size: 1.5em;
-            font-family: 'Cinzel', serif;
-            animation: gold-pulse 1.5s infinite ease-in-out;
-            border: 3px solid #d4af37;
-            padding: 20px;
-            background: rgba(40, 30, 0, 0.9);
-            width: 100%;
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        .action-result { 
-            padding: 15px; 
-            background: #000; 
-            border: 1px solid #444; 
-            border-radius: 5px; 
-            min-height: 100px; 
-            text-align: center; 
-            font-weight: bold; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-        }
+        .locked-zone { filter: blur(4px) grayscale(0.8); pointer-events: none; opacity: 0.4; transition: all 0.5s ease; }
+        .gold-waiting-msg { color: #d4af37; font-size: 1.5em; border: 3px solid #d4af37; padding: 20px; background: rgba(40, 30, 0, 0.9); text-align: center; }
+        .action-result { padding: 15px; background: #000; border: 1px solid #444; border-radius: 5px; min-height: 100px; text-align: center; display: flex; align-items: center; justify-content: center; font-weight: bold; }
 
         #welcomeScreen, #victoryScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); display: flex; justify-content: center; align-items: center; z-index: 2000; }
         #victoryScreen { display: none; background: rgba(0,0,0,0.9); }
-        .welcome-content, .victory-content { max-width: 600px; text-align: center; background: #0a0a0a; padding: 40px; border: 2px solid #d4af37; border-radius: 10px; box-shadow: 0 0 50px rgba(212, 175, 55, 0.3); }
-        
-        .setup-list { text-align: left; margin: 15px 0; display: inline-block; color: #ccc; font-family: 'Roboto', sans-serif; }
-        .setup-list li::before { content: "◈ "; color: #f0ad4e; }
+        .welcome-content, .victory-content { max-width: 600px; text-align: center; background: #0a0a0a; padding: 40px; border: 2px solid #d4af37; border-radius: 10px; }
 
         #helpModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 3000; justify-content: center; align-items: center; }
         .modal-content { background: #111; max-width: 650px; width: 95%; max-height: 85vh; padding: 25px; border: 2px solid #d4af37; border-radius: 10px; overflow-y: auto; font-family: 'Roboto', sans-serif; position: relative; }
@@ -161,7 +91,6 @@
         .tab-content.active { display: block; }
         .help-section-title { color: #f0ad4e; font-family: 'Cinzel', serif; font-size: 1.1em; margin: 15px 0 10px 0; border-bottom: 1px solid #333; }
         .highlight-gold { color: #f0ad4e; font-weight: bold; }
-        .combat-alert { border: 2px solid #f0ad4e !important; background: #400 !important; }
     </style>
 </head>
 <body>
@@ -173,64 +102,31 @@
 <div id="welcomeScreen">
     <div class="welcome-content">
         <p style="font-family: 'Cinzel', serif; font-size: 1.4em;">Oyé combattant(e),</p>
-        <p style="font-family: 'Roboto', sans-serif;">te voici arrivé(e) sur le mode Solo Drakerion TCG.</p>
+        <p>te voici arrivé(e) sur le mode Solo Drakerion TCG.</p>
         <h2 style="color: #f0ad4e;">Mise en place avant de commencer</h2>
-        <ul class="setup-list">
-            <li>Prends un deck de ton choix pour l’affronter.</li>
-            <li>Scinde-le en 2 parties (Persos/Attachements d’un côté et Événements de l’autre).</li>
-            <li>Fais la mise en place habituelle pour les autres cartes.</li>
+        <ul style="text-align: left; margin: 15px 0; display: inline-block; color: #ccc;">
+            <li style="margin-bottom: 10px;">Prends un deck de ton choix pour l’affronter.</li>
+            <li style="margin-bottom: 10px;">Scinde-le en 2 parties (Persos/Attachements d’un côté et Événements de l’autre).</li>
+            <li style="margin-bottom: 10px;">Fais la mise en place habituelle pour les autres cartes (piles Or, piles Prestige, etc.).</li>
         </ul>
         <p style="font-family: 'Roboto', sans-serif; font-style: italic; color: #aaa; border-top: 1px solid #333; padding-top: 15px;">
             Cette application a pour but de simuler les actions adverses afin de pouvoir tester vos deck si vous êtes seuls et abandonnés de tous… un bisou ?<br>
             elle vous parlera à la première personne du singulier, “Je fais X” et vous tutoiera.
         </p>
-        <button class="btn-red" onclick="startGame()" style="font-size: 1.5em; padding: 15px 50px; margin-top: 20px; width: auto; margin-left: auto; margin-right: auto;">COMBATTRE</button>
+        <button class="btn-red" onclick="startGame()" style="font-size: 1.5em; padding: 15px 50px; margin-top: 20px;">COMBATTRE</button>
     </div>
 </div>
 
 <div id="victoryScreen">
     <div class="victory-content">
         <h1 style="color: #f0ad4e; font-size: 2.5em; margin-bottom: 20px;">VICTOIRE !</h1>
-        <p style="font-family: 'Cinzel', serif; font-size: 1.3em; line-height: 1.5; margin-bottom: 30px;">
-            Tu t'es cru plus fort que moi ?<br>
-            c'était mal me connaître...<br>
-            Prêt pour la revanche ?
-        </p>
-        <button class="btn-red" onclick="resetGame()" style="font-size: 1.2em; padding: 15px 40px; width: auto; margin: 0 auto;">RECOMMENCER LE COMBAT</button>
+        <p>Tu t'es cru plus fort que moi ? c'était mal me connaître... Prêt pour la revanche ?</p>
+        <button class="btn-red" onclick="resetGame()" style="font-size: 1.2em; padding: 15px 40px;">RECOMMENCER LE COMBAT</button>
     </div>
 </div>
 
 <div id="helpModal">
-    <div class="modal-content">
-        <button class="btn-gold" onclick="hideHelp()" style="position: absolute; top: 10px; right: 10px; width: 40px; min-height: 30px;">X</button>
-        <h2 style="color: #f0ad4e; font-family: 'Cinzel'; text-align: center;">Aide et Règles du Mode Solo</h2>
-        <div class="tab-bar">
-            <button class="tab-btn active" onclick="switchTab(event, 'rules-tab')">Règles Solo</button>
-            <button class="tab-btn" onclick="switchTab(event, 'interface-tab')">Interface</button>
-        </div>
-        <div id="rules-tab" class="tab-content active">
-            <div class="help-section-title">règles solo.</div>
-            <p>Les cartes personnages adverses arrivent en jeu à l’extrême gauche. Décalez l’ensemble des cartes si besoin.</p>
-            <p>Lorsque l’application déclare un combat, c’est toujours son combattant le plus à <span class="highlight-gold">gauche</span> étant redressé qui attaque votre combattant le plus à <span class="highlight-gold">gauche</span>.</p>
-            <p>Lorsqu’un personnage avec infiltrateur vous attaque, la capacité “infiltrateur” doit être utilisée si possible. L’infiltrateur attaquera alors le personnage le plus à gauche de votre ligne de soutien.</p>
-            <p>Lorsqu’une capacité redirige une de vos attaques sur un autre personnage (en dehors d’intercepteur), redirigez en priorité sur le personnage adjacent côté <span class="highlight-gold">droit</span>. S’il n’y a pas de personnage à droite, faites pareil mais côté gauche.</p>
-            <p>Lorsqu’un soin est prodigué, l’adversaire soigne toujours la carte adjacente côté <span class="highlight-gold">droit</span>. S’il ne nécessite pas de soins, passer à la carte suivante. S’il n’y a pas besoin de soins sur la droite, faites pareil mais côté gauche.</p>
-            <p>Si une capacité action est tirée au sort et qu’aucune carte ne peut en réaliser une, appuyer sur le bouton “Bonus d’action” qui fera gagner aléatoirement un d’or ou un de prestige à votre adversaire.</p>
-            <p>Si une capacité de déplacement s’applique à un personnage au hasard, déplacez le personnage à <span class="highlight-gold">droite</span> de la carte faisant cette action. S’il n’y en a pas à droite, faites-le à gauche. Si le déplacement concerne un personnage sur une autre ligne, déplacez celui qui est le plus à gauche.</p>
-        </div>
-        <div id="interface-tab" class="tab-content">
-            <div class="help-section-title">L’interface.</div>
-            <p><strong>Le bouton Aide :</strong> Il vous donne accès à tout ce qu’il faut savoir pour faire tourner le mode solo.</p>
-            <p><strong>Le bouton “ACTION” :</strong> Il vous permet de simuler une action de l’adversaire. Le résultat affiché est aléatoire.</p>
-            <p><strong>Le bouton “FIN DE COMBAT” :</strong> Il permet de clôturer le combat à l’écran et de revenir à la phase d’action.</p>
-            <p><strong>Le bouton “DECLARER UN COMBAT” :</strong> Il vous permet de déclarer un combat à votre adversaire virtuel.</p>
-            <p><strong>Le bouton “CAPACITÉS DE COMBAT” :</strong> Il vous permet de simuler les capacités combat de votre adversaire virtuel.</p>
-            <p><strong>Le bouton “Plus d’attaquants” :</strong> il vous permet de signaler à votre adversaire virtuel qu’elle ne possède plus de personnages redressés.</p>
-            <p><strong>Le bouton “RÉINITIALISER” :</strong> Il vous permet de remettre l’interface à zéro afin de recommencer une partie.</p>
-            <p><strong>Le bouton “Bonus Action” :</strong> Il permet d’octroyer à l’adversaire virtuel un bonus d’or ou de prestige aléatoirement.</p>
-        </div>
     </div>
-</div>
 
 <div class="container">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -273,7 +169,7 @@
     <div id="iaControls"> 
         <div id="iaButtonGroup" style="display: flex; gap: 10px; margin-bottom: 15px;">
             <button class="btn-red" id="actionBtn" onclick="performAppAction()" style="flex: 1.5; height: 55px;">ACTION (0)</button>
-            <button class="btn-orange" id="declareCombatBtn" onclick="startCombat()" style="flex: 1; height: 55px;">DÉCLARER COMBAT</button>
+            <button class="btn-orange" id="declareCombatBtn" onclick="startCombat(false)" style="flex: 1; height: 55px;">DÉCLARER COMBAT</button>
         </div>
         <div id="actionResult" class="action-result"></div>
         <div id="combatModule" style="display:none; margin-top: 10px;">
@@ -288,94 +184,58 @@
 
 <script>
     let gold = 0, prestige = 0, turn = 1, iaActionCount = 0, maneuverGoldAdded = false;
+    let iaNoMoreAttackers = false, iaHasPassedDefinitively = false, hasHadZeroGold = false;
+    let zeroGoldActionCount = 0; 
     const music = document.getElementById('bgMusic');
 
     function toggleMusic() {
-        if (music.paused) {
-            music.play().catch(e => console.error("Audio block:", e));
-            document.getElementById('musicBtn').textContent = "🔊 MUSIQUE";
-        } else {
-            music.pause();
-            document.getElementById('musicBtn').textContent = "🔇 MUSIQUE";
-        }
+        if (music.paused) { music.play().catch(e => console.error(e)); document.getElementById('musicBtn').textContent = "🔊 MUSIQUE"; }
+        else { music.pause(); document.getElementById('musicBtn').textContent = "🔇 MUSIQUE"; }
     }
 
-    function startGame() { 
-        document.getElementById('welcomeScreen').style.display = 'none'; 
-        applyInterfaceLock(); 
-    }
+    function startGame() { document.getElementById('welcomeScreen').style.display = 'none'; applyInterfaceLock(); }
     
     function updateGold(amount) { 
         gold = Math.max(0, gold + amount); 
         document.getElementById('goldValue').textContent = gold; 
-        if (amount > 0 && !maneuverGoldAdded) { 
-            maneuverGoldAdded = true; 
-            applyInterfaceLock(); 
-        } 
+        if (gold === 0) hasHadZeroGold = true; 
+        if (amount > 0 && !maneuverGoldAdded) { maneuverGoldAdded = true; applyInterfaceLock(); } 
     }
     
     function updatePrestige(amount) { 
         prestige = Math.max(0, prestige + amount); 
         document.getElementById('prestigeValue').textContent = prestige;
-        if (prestige >= 20) showVictory();
+        if (prestige >= 20) document.getElementById('victoryScreen').style.display = 'flex';
     }
 
-    function showVictory() { document.getElementById('victoryScreen').style.display = 'flex'; }
     function applyInterfaceLock() {
         const lock = !maneuverGoldAdded;
         document.getElementById('prestigeSection').classList.toggle('locked-zone', lock);
         document.getElementById('turnSection').classList.toggle('locked-zone', lock);
         document.getElementById('iaButtonGroup').classList.toggle('locked-zone', lock);
-        document.querySelectorAll('#prestigeSection button, #turnSection button, #iaButtonGroup button').forEach(b => b.disabled = lock);
+        
+        document.querySelectorAll('#prestigeSection button, #turnSection button, #iaButtonGroup button').forEach(b => {
+            if (b.id === 'actionBtn' && iaHasPassedDefinitively) b.disabled = true;
+            else b.disabled = lock;
+        });
+
         const res = document.getElementById('actionResult');
         if (lock) res.innerHTML = "<div class='gold-waiting-msg'>Ajoute l'Or de la manœuvre</div>";
+        else if (iaHasPassedDefinitively) res.innerHTML = "<p style='color:#ff4444;'>J'ai passé mon tour définitivement.</p>";
         else res.innerHTML = "<p>En attente d'une action...</p>";
     }
 
-    function performAppAction() {
-        iaActionCount++;
-        document.getElementById('actionBtn').textContent = `ACTION (${iaActionCount})`;
-        let rand = Math.floor(Math.random() * 100);
-        let move = "";
-        if (gold >= 5 && rand >= 90) rand = Math.floor(Math.random() * 90);
-        if (rand < 40) move = "Je joue une carte personnage/attachement.";
-        else if (rand < 70) { startCombat(true); return; }
-        else if (rand < 90) move = "J'active une capacité action.";
-        else move = "Je passe.";
-        document.getElementById('actionResult').innerHTML = `<p>${move}</p>`;
+    async function showHelp() {
+        const modal = document.getElementById('helpModal');
+        if (modal.innerHTML.trim() === "") {
+            try {
+                const response = await fetch('aide.html');
+                const content = await response.text();
+                modal.innerHTML = content;
+            } catch (e) { modal.innerHTML = "<div class='modal-content'>Erreur de chargement.</div>"; }
+        }
+        modal.style.display = 'flex';
     }
-
-    function startCombat(isIA = false) {
-        document.getElementById('combatModule').style.display = 'block';
-        document.getElementById('combatBtn').style.display = 'flex';
-        document.getElementById('endCombatBtn').disabled = true;
-        document.getElementById('iaButtonGroup').classList.add('locked-zone');
-        document.getElementById('iaButtonGroup').querySelectorAll('button').forEach(b => b.disabled = true);
-        document.getElementById('actionResult').style.display = 'none';
-        const msg = isIA ? "🔥 JE DÉCLARE UN COMBAT 🔥" : "🔥 COMBAT DÉCLARÉ 🔥";
-        document.getElementById('combatResponse').innerHTML = msg;
-    }
-
-    function performCombatAction() {
-        const combatMoves = ["Je joue un événement 'Combat'.", "Je passe.", "J'active un intercepteur (si je n'en ai pas, je passe)"];
-        document.getElementById('combatResponse').innerHTML = combatMoves[Math.floor(Math.random() * combatMoves.length)];
-        document.getElementById('combatBtn').style.display = 'none';
-        document.getElementById('endCombatBtn').disabled = false;
-    }
-
-    function endCombat() {
-        document.getElementById('combatModule').style.display = 'none';
-        document.getElementById('iaButtonGroup').classList.remove('locked-zone');
-        document.getElementById('iaButtonGroup').querySelectorAll('button').forEach(b => b.disabled = false);
-        document.getElementById('actionResult').style.display = 'flex';
-        document.getElementById('actionResult').innerHTML = "<p>Combat terminé.</p>";
-    }
-
-    function nextTurn() { turn++; maneuverGoldAdded = false; iaActionCount = 0; document.getElementById('turnValue').textContent = turn; document.getElementById('actionBtn').textContent = "ACTION (0)"; applyInterfaceLock(); }
-    function toggleBoardState() { /* ... */ }
-    function applyBonusAction() { if (Math.random() < 0.5) updateGold(1); else updatePrestige(1); }
-    function resetGame() { location.reload(); }
-    function showHelp() { document.getElementById('helpModal').style.display = 'flex'; }
     function hideHelp() { document.getElementById('helpModal').style.display = 'none'; }
     function switchTab(evt, tabId) { 
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active')); 
@@ -383,6 +243,90 @@
         document.getElementById(tabId).classList.add('active'); 
         evt.currentTarget.classList.add('active'); 
     }
+
+    function toggleBoardState() { 
+        const btn = document.getElementById('boardStateBtn');
+        if (!iaNoMoreAttackers) { iaNoMoreAttackers = true; btn.textContent = "BOARD INCLINÉ"; } 
+        else { iaNoMoreAttackers = false; btn.textContent = "PLUS D'ATTAQUANTS"; }
+    }
+
+    function performAppAction() {
+        if (iaHasPassedDefinitively) return;
+        iaActionCount++;
+        document.getElementById('actionBtn').textContent = `ACTION (${iaActionCount})`;
+        
+        let validActionFound = false;
+        let move = "";
+
+        if (gold === 0) zeroGoldActionCount++;
+
+        while (!validActionFound) {
+            let rand = Math.floor(Math.random() * 100);
+            let passThreshold = (hasHadZeroGold) ? Math.max(5, zeroGoldActionCount * 10) : 0;
+
+            if (rand < passThreshold) {
+                move = "Je passe mon tour définitivement.";
+                iaHasPassedDefinitively = true;
+                document.getElementById('actionBtn').disabled = true;
+                validActionFound = true;
+            } else if (rand < 40) { 
+                if (gold > 0) {
+                    move = "Je joue une carte personnage/attachement.";
+                    iaNoMoreAttackers = false;
+                    document.getElementById('boardStateBtn').textContent = "PLUS D'ATTAQUANTS";
+                    validActionFound = true;
+                }
+            } else if (rand < 65) { 
+                if (!iaNoMoreAttackers) { startCombat(true); return; }
+            } else if (rand < 85) {
+                move = "Je joue une carte événement ACTION.";
+                validActionFound = true;
+            } else { 
+                move = "J'active une capacité ACTION (de gauche à droite).";
+                validActionFound = true;
+            }
+        }
+        document.getElementById('actionResult').innerHTML = `<p>${move}</p>`;
+    }
+
+    function startCombat(isIA = false) {
+        document.getElementById('combatModule').style.display = 'block';
+        document.getElementById('iaButtonGroup').classList.add('locked-zone');
+        document.querySelectorAll('#iaButtonGroup button').forEach(b => b.disabled = true);
+        document.getElementById('actionResult').style.display = 'none';
+        document.getElementById('combatResponse').innerHTML = isIA ? "🔥 JE DÉCLARE UN COMBAT 🔥" : "🔥 COMBAT DÉCLARÉ 🔥";
+        document.getElementById('endCombatBtn').disabled = true;
+    }
+
+    function performCombatAction() {
+        const moves = ["Je joue un événement 'Combat'.", "Je passe."];
+        document.getElementById('combatResponse').innerHTML = moves[Math.floor(Math.random() * moves.length)];
+        document.getElementById('combatBtn').style.display = 'none';
+        document.getElementById('endCombatBtn').disabled = false;
+    }
+
+    function endCombat() {
+        document.getElementById('combatModule').style.display = 'none';
+        document.getElementById('iaButtonGroup').classList.remove('locked-zone');
+        applyInterfaceLock();
+        document.getElementById('actionResult').style.display = 'flex';
+        document.getElementById('combatBtn').style.display = 'flex';
+        document.getElementById('actionResult').innerHTML = "<p>Combat terminé.</p>";
+    }
+
+    function nextTurn() { 
+        turn++; maneuverGoldAdded = false; iaActionCount = 0; 
+        iaHasPassedDefinitively = false; iaNoMoreAttackers = false;
+        hasHadZeroGold = (gold === 0);
+        zeroGoldActionCount = 0; 
+        document.getElementById('boardStateBtn').textContent = "PLUS D'ATTAQUANTS";
+        document.getElementById('turnValue').textContent = turn; 
+        document.getElementById('actionBtn').textContent = "ACTION (0)"; 
+        applyInterfaceLock(); 
+    }
+
+    function applyBonusAction() { if (Math.random() < 0.5) updateGold(1); else updatePrestige(1); }
+    function resetGame() { location.reload(); }
     window.onload = applyInterfaceLock;
 </script>
 </body>
