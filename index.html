@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assistant Solo Drakerion TCG</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -49,7 +48,6 @@
                 <button class="btn-gold" onclick="updateGold(8)">+8</button>
             </div>
         </div>
-        
         <div id="prestigeSection" class="counter">
             <div style="font-size: 0.8em;">✨ Prestige</div>
             <div id="prestigeValue" class="value">0</div>
@@ -57,7 +55,6 @@
             <button class="btn-blue" onclick="updatePrestige(-1)">-1 PRESTIGE</button>
             <button class="btn-blue" onclick="applyBonusAction()" style="font-size: 0.7em;">BONUS D'ACTION</button>
         </div>
-        
         <div id="turnSection" class="counter">
             <div style="font-size: 0.8em;">⏳ Tour</div>
             <div id="turnValue" class="value">1</div>
@@ -71,9 +68,7 @@
             <button class="btn-red" id="actionBtn" onclick="performAppAction()" style="flex: 1.5; height: 55px;">ACTION (0)</button>
             <button class="btn-orange" id="declareCombatBtn" onclick="startCombat(false)" style="flex: 1; height: 55px;">DÉCLARER COMBAT</button>
         </div>
-        
         <div id="actionResult" class="action-result"></div>
-        
         <div id="combatModule" style="display:none; margin-top: 10px;">
             <div class="action-result combat-alert" style="flex-direction: column; gap: 10px;">
                 <div id="combatResponse">🔥 COMBAT ACTIF 🔥</div>
