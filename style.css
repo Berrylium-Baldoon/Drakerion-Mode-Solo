@@ -82,4 +82,22 @@ button:disabled { filter: grayscale(1); opacity: 0.5; cursor: not-allowed; box-s
 .tab-content { display: none; line-height: 1.6; color: #eee; font-size: 0.9em; }
 .tab-content.active { display: block; }
 .help-section-title { color: #f0ad4e; font-family: 'Cinzel', serif; font-size: 1.1em; margin: 15px 0 10px 0; border-bottom: 1px solid #333; }
+
+/* --- NOUVELLES CLASSES DE COULEURS POUR LE TEXTE --- */
 .highlight-gold { color: #f0ad4e; font-weight: bold; }
+
+.highlight-blue { 
+    color: #5bc0de; 
+    font-weight: bold; 
+    text-decoration: underline; 
+}
+
+.highlight-red { 
+    color: #ff4500; 
+    font-weight: bold; 
+}
+
+.highlight-green { 
+    color: #5cb85c; 
+    font-weight: bold; 
+}
